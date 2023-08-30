@@ -6,17 +6,20 @@ export const postSlice = apiSlice.injectEndpoints({
   endpoints: (builder) => ({
     getItem: builder.query({
       query: () => "/posts",
-      providesTags: ["Posts"],
+      providesTags: (result, error, arg) => ["Posts"],
+      keepUnusedDataFor : 60
     }),
     getSingleItem: builder.query({
       query: (id) => `/posts/${id}`,
+      providesTags: (result, error, arg) => [{type: "SinglePost", id: arg}],
+      keepUnusedDataFor : 60
     }),
     deleteItem: builder.mutation({
       query: (id) => ({
         url: `/posts/${id}`,
         method: "delete",
       }),
-      invalidatesTags: ["Posts"],
+      invalidatesTags: (result, error, arg) => ["Posts"],
     }),
     createItem: builder.mutation({
       query: (data) => ({
@@ -24,7 +27,15 @@ export const postSlice = apiSlice.injectEndpoints({
         method: "post",
         body: data,
       }),
-      invalidatesTags: ["Posts"],
+      invalidatesTags:(result, error, arg) => ["Posts"],
+    }),
+    updateItem: builder.mutation({
+      query: (data) => ({
+        url: `/posts/${data.id}`,
+        method: "put",
+        body: data,
+      }),
+      invalidatesTags:(result, error, arg) => ["Posts", "SinglePost"],
     }),
   }),
 });
@@ -34,4 +45,5 @@ export const {
   useGetSingleItemQuery,
   useDeleteItemMutation,
   useCreateItemMutation,
+  useUpdateItemMutation
 } = postSlice;

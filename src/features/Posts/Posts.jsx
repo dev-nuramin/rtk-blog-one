@@ -1,10 +1,7 @@
 import React from "react";
 import "./Posts.scss";
 import { Link, useParams } from "react-router-dom";
-import {
-  useDeleteItemMutation,
-  useGetItemQuery,
-} from "./postSlice";
+import { useDeleteItemMutation, useGetItemQuery } from "./postSlice";
 import { Button } from "bootstrap";
 
 //home post
@@ -36,8 +33,10 @@ const Posts = () => {
     return (content = (
       <div className="blog my-5">
         <div className="container">
-          <Link to='/create' className="new-post-create-btn">Create new post</Link>
-          
+          <Link to="/create" className="new-post-create-btn">
+            Create new post
+          </Link>
+
           <div className="row">
             <div className="col-md-12 my-3">
               {data.map(({ title, desc, photo, id }, index) => {
@@ -54,7 +53,16 @@ const Posts = () => {
                             Read more
                           </Link>
                           &nbsp;
-                          <button className="btn btn-danger" onClick={() => deleteItem(id)}>delete</button>
+                          <Link to={`/edit/${id}`} className="btn btn-info">
+                            Edit
+                          </Link>
+                          &nbsp;
+                          <button
+                            className="btn btn-danger"
+                            onClick={() => deleteItem(id)}
+                          >
+                            delete
+                          </button>
                         </div>
                       </div>
                     </div>
